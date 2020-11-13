@@ -1,0 +1,23 @@
+[
+    {
+        "name": "Cesar Juarez2",
+        "location": "San Marcos",
+        "age": 23,
+        "infectedType": "communitary",
+        "state": "asymptomatic" 
+    },
+    {
+        "name": "Shubert Alonzo2",
+        "location": "Guatemala City",
+        "age": 22,
+        "infectedType": "communitary",
+        "state": "symptomatic" 
+    },
+    {
+        "name": "Lisa de Leon2",
+        "location": "Mixco",
+        "age": 23,
+        "infectedType": "communitary",
+        "state": "symptomatic" 
+    }
+]

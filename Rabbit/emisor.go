@@ -5,7 +5,19 @@ import (
 	"log"
 	"github.com/streadway/amqp"
 	"strconv"
+	"github.com/gorilla/mux"
+	"net/http"
+	"io/ioutil"
+	"encoding/json"
 )
+
+type Caso struct {
+	Name string `json:"name"`
+	Location string `json:"location"`
+	Age int16 `json:"age"`
+	InfectedType string `json:"infectedType"`
+	State string `json:"state"`
+}
 
 func failOnError(err error, msg string){
 	if err != nil {
@@ -13,7 +25,21 @@ func failOnError(err error, msg string){
 	}
 }
 
-func main(){
+func addCaso(w http.ResponseWriter, r *http.Request){
+
+	//recuperar datos
+	var newCaso Caso
+	reqbody, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Fprintf(w, "Insert a valid case")
+	}
+	json.Unmarshal(reqbody, &newCaso)
+	name:= newCaso.Name
+	location := newCaso.Location
+	age := newCaso.Age
+	it := newCaso.InfectedType
+	state := newCaso.State
+
 	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
 	failOnError(err, "Fallo al conectar con rabbitmq")
 	defer conn.Close()
@@ -33,24 +59,25 @@ func main(){
 
 	failOnError(err, "Fallo al abrir el canal")
 
-	name:="op"
-	location := "guate"
-	it := "comunitario"
-	state := "sintomatico"
+	body := fmt.Sprintf("%s,%s;%s,%s;%s,%s;%s,%s;%s,%s;" , "name", name,"location", location,"age", strconv.Itoa(int(age)),"infectedType", it,"state", state)
+	err = ch.Publish(
+		"",
+		q.Name,
+		false,
+		false,
+		amqp.Publishing{
+			ContentType: "text/plain",
+			Body: []byte(body),
+		})
+	log.Printf("Sent %s", body)
+	failOnError(err, "Fallo en enviar el mensaje")
+	
+}
 
-	for i:= 0 ; i<10 ; i++ {
-		body := fmt.Sprintf("%s,%s;%s,%s;%s,%s;%s,%s;%s,%s;" , "name", name+strconv.Itoa(i),"location", location,"age", strconv.Itoa(i),"infectedType", it,"state", state)
-		err = ch.Publish(
-			"",
-			q.Name,
-			false,
-			false,
-			amqp.Publishing{
-				ContentType: "text/plain",
-				Body: []byte(body),
-			})
-		log.Printf("Sent %s", body)
-		failOnError(err, "Fallo en enviar el mensaje")
-	}
+func main(){
+	router := mux.NewRouter().StrictSlash(true)
+	router.HandleFunc("/", addCaso).Methods("POST")
+	fmt.Println("El servidor go a la escucha en puerto 5000")
+	http.ListenAndServe(":5000", router)
 }
 

@@ -7,8 +7,9 @@ channel = connection.channel()
 
 channel.queue_declare(queue='hello')
 #---------------configuraciones de mongo-----------------
-mongoClient =  MongoClient('35.225.245.55', 27017)
-db = mongoClient.proyecto
+#mongoClient =  MongoClient('35.225.245.55', 27017)
+mongoClient =  MongoClient('mongodb://35.225.245.55:27017/')
+db = mongoClient['proyecto']
 colleccion = db.casos
 #---------------configuraciones de redis-----------------
 redisClient = redis.Redis(host = '35.224.140.76', port = 6379)
@@ -36,7 +37,6 @@ def callback(ch, method, properties, body):
 		"state" : state
 	})
 	redisClient.sadd('casos', nombre+','+location+','+str(age)+',' + it + ',' + state)
-	#redisClient.sadd('casos', 'caso1')
 
 channel.basic_consume(queue = 'hello', on_message_callback = callback, auto_ack = True )
 print('Esperando por mensajes')

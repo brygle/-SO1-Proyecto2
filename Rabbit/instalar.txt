@@ -1,2 +1,4 @@
 sudo pip3 install pika
 sudo go get github.com/streadway/amqp
+
+CONFIG SET protected-mode no
