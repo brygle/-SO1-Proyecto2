@@ -87,6 +87,6 @@ func main(){
 	router.HandleFunc("/", addCaso).Methods("POST")
 	router.HandleFunc("/index", index)
 	fmt.Println("El servidor go a la escucha en puerto 5000")
-	http.ListenAndServe(":5000",handlres.CORS(headers, methods, origins)(router))
+	http.ListenAndServe(":5000",handlers.CORS(headers, methods, origins)(router))
 }
 
