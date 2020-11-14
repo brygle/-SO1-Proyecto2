@@ -7,5 +7,5 @@ COPY . .
 
 RUN go get -d -v ./...
 RUN go install -v ./...
-
+EXPORT 5000
 CMD ["app"]

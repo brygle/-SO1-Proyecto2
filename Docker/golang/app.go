@@ -40,7 +40,7 @@ func addCaso(w http.ResponseWriter, r *http.Request){
 	it := newCaso.InfectedType
 	state := newCaso.State
 
-	conn, err := amqp.Dial("amqp://guest:guest@0.0.0.0:5672/")
+	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
 	failOnError(err, "Fallo al conectar con rabbitmq")
 	defer conn.Close()
 
