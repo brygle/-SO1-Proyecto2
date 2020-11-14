@@ -26,6 +26,10 @@ func failOnError(err error, msg string){
 	}
 }
 
+func index(w http.ResponseWriter, r *http.Request){
+	fmt.Fprintf(w, "este es el index")
+}
+
 func addCaso(w http.ResponseWriter, r *http.Request){
 
 	//recuperar datos
@@ -81,6 +85,7 @@ func main(){
 	methods := handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE"})
 	origins := handlers.AllowedOrigins([]string{"*"})
 	router.HandleFunc("/", addCaso).Methods("POST")
+	router.HandleFunc("/index", index)
 	fmt.Println("El servidor go a la escucha en puerto 5000")
 	http.ListenAndServe(":5000",handlres.CORS(headers, methods, origins)(router))
 }
