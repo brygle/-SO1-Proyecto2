@@ -6,6 +6,7 @@ import (
 	"github.com/streadway/amqp"
 	"strconv"
 	"github.com/gorilla/mux"
+	"github.com/gorilla/handlers"
 	"net/http"
 	"io/ioutil"
 	"encoding/json"
@@ -76,8 +77,11 @@ func addCaso(w http.ResponseWriter, r *http.Request){
 
 func main(){
 	router := mux.NewRouter().StrictSlash(true)
+	headers := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
+	methods := handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE"})
+	origins := handlers.AllowedOrigins([]string{"*"})
 	router.HandleFunc("/", addCaso).Methods("POST")
 	fmt.Println("El servidor go a la escucha en puerto 5000")
-	http.ListenAndServe(":5000", router)
+	http.ListenAndServe(":5000",handlres.CORS(headers, methods, origins)(router))
 }
 
