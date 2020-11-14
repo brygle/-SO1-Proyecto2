@@ -32,7 +32,7 @@ def callback(ch, method, properties, body):
 	colleccion.insert({
 		"nombre" : nombre,
 		"location" : location,
-		"age" : age,
+		"age" : int(age),
 		"infectedType" : it,
 		"state" : state
 	})
