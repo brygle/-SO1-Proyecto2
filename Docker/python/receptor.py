@@ -12,7 +12,7 @@ mongoClient =  MongoClient('mongodb://35.225.245.55:27017/')
 db = mongoClient['proyecto']
 colleccion = db.casos
 #---------------configuraciones de redis-----------------
-redisClient = redis.Redis(host = '35.224.140.76', port = 6379)
+redisClient = redis.Redis(host = '34.122.169.73', port = 6379)
 
 def callback(ch, method, properties, body):
 
