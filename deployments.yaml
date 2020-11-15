@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: lab-deployment
+    namespace: project
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: lab
+    template:
+        metadata:
+            labels:
+                app: lab
+        spec:
+            containers:
+            - name: serverrabbit
+              image: rabbitmq:3-management
+              ports:
+                - containerPort: 5672
+                - containerPort: 15672
+            - name: servergolang
+              image: gcr.io/nomadic-botany-290523/s1
+              ports:
+                - containerPort: 5000
+            - name: ser2
+              image: gcr.io/nomadic-botany-290523/ser3
