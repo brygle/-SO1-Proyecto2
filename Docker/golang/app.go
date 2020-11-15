@@ -45,6 +45,8 @@ func addCaso(w http.ResponseWriter, r *http.Request){
 	it := newCaso.InfectedType
 	state := newCaso.State
 
+	var jsonstr = []byte(`{"name":"` + name + `","location":"` + location +`","age":`+strconv.Itoa(int(age))+`,"infectedtype":"`+it+`","state":"`+state+ `"}`)
+
 	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
 	failOnError(err, "Fallo al conectar con rabbitmq")
 	defer conn.Close()
@@ -64,15 +66,15 @@ func addCaso(w http.ResponseWriter, r *http.Request){
 
 	failOnError(err, "Fallo al abrir el canal")
 
-	body := fmt.Sprintf("%s,%s;%s,%s;%s,%s;%s,%s;%s,%s;" , "name", name,"location", location,"age", strconv.Itoa(int(age)),"infectedType", it,"state", state)
+	//body := fmt.Sprintf("%s,%s;%s,%s;%s,%s;%s,%s;%s,%s;" , "name", name,"location", location,"age", strconv.Itoa(int(age)),"infectedType", it,"state", state)
 	err = ch.Publish(
 		"",
 		q.Name,
 		false,
 		false,
 		amqp.Publishing{
-			ContentType: "text/plain",
-			Body: []byte(body),
+			ContentType: "application/json",
+			Body: jsonstr,
 		})
 	log.Printf("Sent %s", body)
 	failOnError(err, "Fallo en enviar el mensaje")
