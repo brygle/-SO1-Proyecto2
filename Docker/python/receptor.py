@@ -18,7 +18,7 @@ def callback(ch, method, properties, body):
 
 	colleccion.insert_one(loads(body.decode()))
 	parsed = loads(body.decode())
-	string_json="\""+str(parsed)+"\""
+	string_json=str(parsed)
 	redisClient.rpush('mylist', string_json)
 
 channel.basic_consume(queue = 'hello', on_message_callback = callback, auto_ack = True )

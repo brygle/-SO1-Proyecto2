@@ -76,7 +76,6 @@ func addCaso(w http.ResponseWriter, r *http.Request){
 			ContentType: "application/json",
 			Body: jsonstr,
 		})
-	log.Printf("Sent %s", body)
 	failOnError(err, "Fallo en enviar el mensaje")
 	
 }
