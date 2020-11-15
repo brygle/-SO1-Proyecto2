@@ -1,11 +1,17 @@
-FROM golang:1.14
+FROM golang:1.12-alpine
 
-WORKDIR /go/src/app
-COPY go.mod .
+RUN apk update && apk upgrade && \
+	apk add --no-cache bash git openssh
+
+WORKDIR /app
+
 RUN go mod download
+RUN go get github.com/gorilla/mux
+RUN go get github.com/gorilla/handlers
+RUN go get github.com/streadway/amqp
+
 COPY . .
 
-RUN go get -d -v ./...
-RUN go install -v ./...
 EXPOSE 5000
-CMD ["app"]
+
+CMD ["go", "run", "app.go"]

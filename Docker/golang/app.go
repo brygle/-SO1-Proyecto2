@@ -85,7 +85,7 @@ func main(){
 	methods := handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE"})
 	origins := handlers.AllowedOrigins([]string{"*"})
 	router.HandleFunc("/", addCaso).Methods("POST")
-	router.HandleFunc("/index", index)
+	router.HandleFunc("/index", index).Methods("GET")
 	fmt.Println("El servidor go a la escucha en puerto 5000")
 	http.ListenAndServe(":5000",handlers.CORS(headers, methods, origins)(router))
 }
