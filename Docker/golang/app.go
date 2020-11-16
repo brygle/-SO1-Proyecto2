@@ -45,7 +45,7 @@ func addCaso(w http.ResponseWriter, r *http.Request){
 	it := newCaso.InfectedType
 	state := newCaso.State
 
-	var jsonstr = []byte(`{"name":"` + name + `","location":"` + location +`","age":`+strconv.Itoa(int(age))+`,"infectedtype":"`+it+`","state":"`+state+ `"}`)
+	var jsonstr = []byte(`{"name":"` + name + `" , "location":"` + location +`", "age":`+strconv.Itoa(int(age))+`, "infectedtype":"`+it+`", "state":"`+state+ `"}`)
 
 	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
 	failOnError(err, "Fallo al conectar con rabbitmq")
