@@ -12,7 +12,7 @@ mongoClient =  MongoClient('mongodb://35.225.245.55:27017/')
 db = mongoClient['proyecto']
 colleccion = db.casos
 #---------------configuraciones de redis-----------------
-redisClient = redis.Redis(host = '35.224.140.76', port = 6379)
+redisClient = redis.Redis(host = '34.72.157.182', port = 6379)
 
 def callback(ch, method, properties, body):
 
@@ -25,3 +25,4 @@ def callback(ch, method, properties, body):
 channel.basic_consume(queue = 'hello', on_message_callback = callback, auto_ack = True )
 print('Esperando por mensajes')
 channel.start_consuming()
+
